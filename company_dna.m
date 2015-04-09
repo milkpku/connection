@@ -1,4 +1,5 @@
 %% company DNA
+load('../data/report.mat');
 
 back = 1;
 forward = 1;
@@ -7,13 +8,13 @@ corr = zeros(length(report));
 
 for company = 1:length(report)
 
-	DNA_size = length(report{company,1}.event(:,1));
+	DNA_size = length(report{company,1}.event(:,2));
 
-	self_DNA = generate_DNA(company, company, back, forward);
+	self_DNA = generate_DNA(company, report{company,1}.event(:,2), back, forward);
     report{company,1}.DNA = zeros(DNA_size,length(report));
     
 	for other = 1:length(report)
-		other_DNA = generate_DNA(company, other, back, forward);
+		other_DNA = generate_DNA(other, report{company,1}.event(:,2), back, forward);
         report{company,1}.DNA(:,other) = other_DNA;
 		corr(company, other) = DNA_sim(self_DNA, other_DNA);
     end
